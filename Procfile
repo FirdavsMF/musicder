@@ -1,1 +1,1 @@
-python SongPlayRoBot.py
+python3 SongPlayRoBot.py
