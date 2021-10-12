@@ -1,5 +1,6 @@
 
 import logging
+import time
 from pyrogram import Client as app
 from pyrogram.types import Message
 # from youtube_search import YoutubeSearch
@@ -53,7 +54,6 @@ def start(client, message):
         #         ]
         #     ]
         )
-    
 
 @bot.on_message()
 def a(client, message):
@@ -120,86 +120,4 @@ def a(client, message):
         os.remove(thumb_name)
     except Exception as e:
         print(e)
-@bot.on_message(pyrogram.filters.command(["search"]))
-async def ytsearch(_, message: Message):
-    try:
-        if len(message.command) < 2:
-            await message.reply_text("/поиску нужен аргумент!")
-            return
-        query = message.text.split(None, 1)[1]
-        m = await message.reply_text("Ищем ....")
-        results = YoutubeSearch(query, max_results=4).to_dict()
-        i = 0
-        text = ""
-        while i < 4:
-            text += f"Title - {results[i]['title']}\n"
-            text += f"Duration - {results[i]['duration']}\n"
-            text += f"Views - {results[i]['views']}\n"
-            text += f"Channel - {results[i]['channel']}\n"
-            text += f"https://youtube.com{results[i]['url_suffix']}\n\n"
-            i += 1
-        await m.edit(text, disable_web_page_preview=True)
-    except Exception as e:
-        await message.reply_text(str(e))    
-
-def downloada(url, quality):
-    
-    if quality == "1":
-        ydl_opts_start = {
-            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best', #This Method Need ffmpeg
-            'outtmpl': f'localhoct/%(id)s.%(ext)s',
-            'no_warnings': True,
-            'ignoreerrors': True,
-            'noplaylist': True,
-            'http_chunk_size': 20097152,
-            'writethumbnail': True
-
-        }
-        with youtube_dl.YoutubeDL(ydl_opts_start) as ydl:
-            result = ydl.extract_info("{}".format(url))
-            title = ydl.prepare_filename(result)
-            ydl.download([url])
-        return title
-    
-    if quality == "2":
-        ydl_opts_start = {
-            'format': 'best', #This Method Don't Need ffmpeg , if you don't have ffmpeg use This 
-            'outtmpl': f'localhoct/%(id)s.%(ext)s',
-            'no_warnings': False,
-            'logtostderr': False,
-            'ignoreerrors': False,
-            'noplaylist': True,
-            'http_chunk_size': 2097152,
-            'writethumbnail': True
-        }
-        with youtube_dl.YoutubeDL(ydl_opts_start) as ydl:
-            result = ydl.extract_info("{}".format(url))
-            title = ydl.prepare_filename(result)
-            ydl.download([url])
-        return f'{title}'
-    
-    if quality == "3":
-        ydl_opts_start = {
-            'format': 'best[height=480]',
-            'outtmpl': f'localhoct/%(id)s.%(ext)s',
-            'no_warnings': False,
-            'logtostderr': False,
-            'ignoreerrors': False,
-            'noplaylist': True,
-            'http_chunk_size': 2097152,
-            'writethumbnail': True
-        }
-        with youtube_dl.YoutubeDL(ydl_opts_start) as ydl:
-            result = ydl.extract_info("{}".format(url))
-            title = ydl.prepare_filename(result)
-            ydl.download([url])
-        return f'{title}'
-
-# here you can Edit Start message
-# @app.on_message(filters.command('start', '/'))
-# def start(c, m): # c Mean Client | m Mean Message
-#     m.reply_text('Hi Welcome To @iLoaderBot \n Just Send Video Url To me and i\'ll try to upload the video and send it to you') #Edit it and add your Bot ID :)
-
-             
-
 bot.run()
