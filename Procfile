@@ -1,1 +1,1 @@
-web: python3 SongPlayRoBot:app
+web: python3 SongPlayRoBot.py
